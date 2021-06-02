@@ -151,6 +151,32 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract configure(): void;
   abstract renderContent(): void;
 }
+// ProjecItem Class
+class ProjecItem extends Component<HTMLUListElement, HTMLLIElement> {
+  private project: Project;
+
+  get persons() {
+    if (this.project.people === 0) {
+      return '1 person';
+    } else {
+      return `${this.project.people} persons`;
+    }
+  }
+
+  constructor(hostId: string, project: Project) {
+    super('single-project', hostId, false, project.id);
+    this.project = project;
+
+    this.configure();
+    this.renderContent();
+  }
+  configure() {}
+  renderContent() {
+    this.element.querySelector('h2')!.textContent = this.project.title;
+    this.element.querySelector('h3')!.textContent = this.persons + ' assigned';
+    this.element.querySelector('p')!.textContent = this.project.description;
+  }
+}
 
 // ProjectList Class
 class ProjectList extends Component<HTMLDivElement, HTMLElement> {
@@ -189,9 +215,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     )! as HTMLUListElement;
     listEl.innerHTML = '';
     for (const prjItme of this.assignedProjects) {
-      const listItem = document.createElement('li');
-      listItem.textContent = prjItme.title;
-      listEl?.appendChild(listItem);
+      new ProjecItem(this.element.querySelector('ul')!.id, prjItme);
     }
   }
 }
@@ -277,7 +301,7 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
       this.showError(this.titleErrorEl, validate(validateTitle)[1]);
       this.showError(this.descErrorEl, validate(validateDesc)[1]);
       this.showError(this.peopleErrorEl, validate(validatePeople)[1]);
-
+      console.log('not valid');
       return;
     } else {
       return [title, description, +people];

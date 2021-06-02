@@ -231,17 +231,15 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   constructor() {
     super('project-input', 'app', true, 'user-input');
 
-    const importedNode = document.importNode(this.templateEl.content, true);
-
-    this.titleErrorEl = importedNode.querySelector(
+    this.titleErrorEl = this.element.querySelector(
       '#titleError'
     ) as HTMLParagraphElement;
 
-    this.descErrorEl = importedNode.querySelector(
+    this.descErrorEl = this.element.querySelector(
       '#descError'
     ) as HTMLParagraphElement;
 
-    this.peopleErrorEl = importedNode.querySelector(
+    this.peopleErrorEl = this.element.querySelector(
       '#peopleError'
     ) as HTMLParagraphElement;
 
@@ -301,7 +299,6 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
       this.showError(this.titleErrorEl, validate(validateTitle)[1]);
       this.showError(this.descErrorEl, validate(validateDesc)[1]);
       this.showError(this.peopleErrorEl, validate(validatePeople)[1]);
-      console.log('not valid');
       return;
     } else {
       return [title, description, +people];
